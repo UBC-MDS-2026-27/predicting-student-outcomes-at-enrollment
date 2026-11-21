@@ -6,7 +6,9 @@ Bodie (YiChuan) Li, Colby Yurkiw, Ganiyat Adekunle, and Rupesh Patel
 
 How well can information available at enrollment predict whether a student will drop out, remain enrolled, or graduate by the end of their program’s normal duration? We trained a logistic regression model using five enrollment predictors. On 885 students held out for testing, it scored 0.509 on macro F1, a measure that gives each outcome equal weight. Always predicting graduation scored 0.222. The model identified 145 of the 284 students who dropped out. An adviser who relied on its predictions alone would therefore miss nearly half the students they hoped to reach.
 
-To read the report without running the analysis, open the HTML file on GitHub, choose **Download raw file**, and open the downloaded file in your browser. [Report HTML](reports/student-academic-outcomes.html) · [Quarto source](reports/student-academic-outcomes.qmd)
+Read the report online without installing anything:
+
+[Read the published report](https://ubc-mds-2026-27.github.io/predicting-student-outcomes-at-enrollment/reports/student-academic-outcomes.html) · [Quarto source](reports/student-academic-outcomes.qmd) · [Report HTML](reports/student-academic-outcomes.html)
 
 ## Reproduce the analysis
 
