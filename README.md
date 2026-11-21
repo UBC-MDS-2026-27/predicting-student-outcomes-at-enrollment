@@ -4,9 +4,9 @@
 
 Bodie (YiChuan) Li, Colby Yurkiw, Ganiyat Adekunle, and Rupesh Patel
 
-How well can information available at enrollment predict whether a student will drop out, remain enrolled, or graduate by the end of their program’s normal duration? Among the 3,539 training students, those who dropped out and those still enrolled had the same median admission grade (124.2 out of 200). Two programs with similar dropout rates also differed in the share of students still studying at the cutoff. These findings suggest that admission grade alone gives an adviser little basis for distinguishing the outcomes, and that continued enrollment is worth tracking separately.
+How well can information available at enrollment predict whether a student will drop out, remain enrolled, or graduate by the end of their program’s normal duration? We trained a logistic regression model using five enrollment predictors. On 885 students held out for testing, it scored 0.509 on macro F1, a measure that gives each outcome equal weight. Always predicting graduation scored 0.222. The model identified 145 of the 284 students who dropped out. An adviser who relied on its predictions alone would therefore miss nearly half the students they hoped to reach.
 
-[Downloadable HTML report](reports/student-academic-outcomes.html) · [Quarto source](reports/student-academic-outcomes.qmd)
+To read the report without running the analysis, open the HTML file on GitHub, choose **Download raw file**, and open the downloaded file in your browser. [Report HTML](reports/student-academic-outcomes.html) · [Quarto source](reports/student-academic-outcomes.qmd)
 
 ## Reproduce the analysis
 
@@ -35,7 +35,13 @@ How well can information available at enrollment predict whether a student will 
 
 Realinho, V., Vieira Martins, M., Machado, J., & Baptista, L. (2021). *Predict Students’ Dropout and Academic Success* [Dataset]. UCI Machine Learning Repository. [DOI 10.24432/C5MC89](https://doi.org/10.24432/C5MC89).
 
-The original data contain 4,424 student records across 17 undergraduate programs at the Polytechnic Institute of Portalegre in Portugal. For this project, we split the records by outcome into 3,539 training and 885 test rows using a stratified random split. We removed 12 first- and second-semester columns from both files because those observations occur after enrollment, and trimmed whitespace from column names. The source data and these derived files are available under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+The original data contain 4,424 student records across 17 undergraduate programs at the Polytechnic Institute of Portalegre in Portugal. We randomly assigned 3,539 students to the training set and 885 to the test set, preserving the proportions of the three outcomes. We removed 12 first- and second-semester columns from both files because those observations occur after enrollment, and trimmed whitespace from column names. The source data and these derived files are available under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+## AI use
+
+We used OpenAI Codex to help prepare the enrollment predictors, draft and revise the report and README, and check reported scores against the model output. GitHub Copilot provided feedback on the preprocessing pull request. Teammates reviewed the changes before merging them.
+
+One question we asked was “Why exclude semester performance when predicting at enrollment?” A sample prompt based on our exploratory analysis is “What do the boxplots tell us about how admission grades overlap for students who dropped out, stayed enrolled, or graduated?” Our [AI instructions](AGENT.md) and [contributor policy](CONTRIBUTING.md#ai-use-policy) describe how we use these tools.
 
 ## Licenses
 
