@@ -4,7 +4,7 @@ We welcome bug reports, suggestions, and contributions to our analysis of studen
 
 ## Prerequisites
 
-Before starting a substantial change, search the [existing issues](https://github.com/UBC-MDS-2026-27/DSCI-522-Group-5/issues) to see whether someone has already reported the problem or proposed a similar idea. If a relevant issue exists, join that discussion. Otherwise, open an issue and wait for a team member to agree on the scope before beginning the work.
+Before starting a substantial change, search the [existing issues](https://github.com/UBC-MDS-2026-27/predicting-student-outcomes-at-enrollment/issues) to see whether someone has already reported the problem or proposed a similar idea. If a relevant issue exists, join that discussion. Otherwise, open an issue and wait for a team member to agree on the scope before beginning the work.
 
 For a **bug report**, explain what you expected to happen, what actually happened, and the smallest set of steps that reproduces the problem. If the report fails to render, include the command you ran, the error message, and your operating system. A short code example or screenshot can help someone reproduce the issue. See the [guide to minimal reproducible examples](https://www.tidyverse.org/help/#reprex).
 
@@ -15,8 +15,8 @@ For a **suggested change**, identify the affected part of the project and explai
 Install [Git](https://git-scm.com/downloads), [uv](https://docs.astral.sh/uv/getting-started/installation/), and the [Quarto CLI](https://quarto.org/docs/get-started/). Team members can then clone the repository and create the project environment by running the following commands in a terminal.
 
 ```sh
-git clone https://github.com/UBC-MDS-2026-27/DSCI-522-Group-5.git
-cd DSCI-522-Group-5
+git clone https://github.com/UBC-MDS-2026-27/predicting-student-outcomes-at-enrollment.git
+cd predicting-student-outcomes-at-enrollment
 uv sync --locked
 ```
 
