@@ -21,7 +21,7 @@ format:
 
 # Summary
 
-How well can information available at enrollment predict whether a student will drop out, still be studying, or graduate by the end of their program’s normal duration? We studied 4,424 students at one Portuguese institution. On the 885 students held out for testing, logistic regression with five enrollment predictors scored 0.509 on macro F1, which gives each outcome equal weight. Always predicting graduation scored 0.222. The model identified 145 of the 284 students who dropped out. Using its predictions alone to decide whom to contact would therefore miss nearly half the students an adviser hoped to reach.
+How well can information available at enrollment predict whether a student will drop out, still be studying, or graduate by the end of their program’s normal duration? We studied 4,424 students at one Portuguese institution. On the 885 students held out for testing, logistic regression with five enrollment predictors scored 0.509 on  macro F1, which balances precision and recall within each outcome and gives all three outcomes equal weight. Always predicting graduation scored 0.222. The model identified 145 of the 284 students who dropped out. Using its predictions alone to decide whom to contact would therefore miss nearly half the students an adviser hoped to reach.
 
 # Introduction
 
@@ -223,7 +223,10 @@ We selected a logistic regression classifier as our model for this problem as it
 
 We use F1 to evaluate the models since the classes are unbalanced, and using accuracy alone would be misleading when comparing with the baseline. Macro F1 was used to average the class-specific scores since it gives equal weight to each class. In our problem, the models ability to predict each class is important so using macro F1 is fitting. [4](#ref-f1) The model was tuned using a grid search with 5-fold cross validation since we only had 2 hyper-parameters to tune: C (regularization, 0.001-100), and class weighting. The model with hyper-parameters which optimize the macro F1 score is selected. The test set was held out for the entirety of the model building process, and after the model is finalized, it is refit (during grid search automatically) on all of the training data and evaluated using the test data.
 
-# Exploratory findings
+
+# Results
+
+## Exploratory findings
 
 ### What information is available for exploration?
 
@@ -490,9 +493,7 @@ Table 2 shows that 88.2% of students with outstanding fees dropped out, compared
 
 For the adviser, the decisive question is **when the status was recorded**. A balance updated after a student left could make past dropout easy to recognize without helping predict it at enrollment. The file supplies no student-level date for these financial records. That is why a large difference can justify investigating a feature while still leaving it out of the initial model.
 
-The training data suggest that program, application route, and age at enrollment are worth examining together. Students with different outcomes often had similar admission grades, so the value of grade alongside those other predictors remains a question for model validation. Financial status also varied across outcomes, but its use for prediction depends on confirming what was recorded by enrollment.
-
-# Results
+The training data suggest that program, application route, and age at enrollment are worth examining together. Students with different outcomes often had similar admission grades, so the value of grade alongside those other predictors remains a question for model validation. We included all four predictors in the model, along with scholarship status, which was known at enrollment. We excluded debt and tuition-payment status because we could not confirm when those values were recorded.
 
 ## Hyper-parameter tuning and cross-validation
 
@@ -509,7 +510,7 @@ def mean_std_cross_val_scores(model, X, y, **kwargs):
   scores = pd.DataFrame(cross_validate(model, X, y, **kwargs))
   summary = pd.concat([
     scores.mean().add_suffix("_mean"),
-    scores.std().add_suffix("_std")
+    scores.std(ddof=0).add_suffix("_std")
   ])
   return summary
 
