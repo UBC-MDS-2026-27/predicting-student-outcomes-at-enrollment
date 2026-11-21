@@ -4,7 +4,7 @@
 
 We strive to maintain a respectful, inclusive, and welcoming environment for everyone contributing to Group 5 for course DSCI 522 regardless of background, identity, disability, or experience level.
 
-## Expected behaviour from group memebers
+## Expected behaviour from group members
 
 Contributors should:
 
@@ -26,18 +26,18 @@ We do not tolerate:
 
 ## Scope
 
-This code and coduct applies to project issues, pull requests, reviews, meetings,and other communications related to the project.
+This code of conduct applies to project issues, pull requests, reviews, meetings, and other communications related to the project.
 
 ## Reporting concerns
 
 Failure to follow the code of conduct will result in a three-step warning system:
 
 1. A written Slack notice that outlines the violation of the conduct and reminds the member of the team contract and code of conduct conditions.
-2. A meeting to discuss the behaviour,after which the member writes an agreement to follow the team contract and code of conduct.
+2. A meeting to discuss the behaviour, after which the member writes an agreement to follow the team contract and code of conduct.
 3. Reaching out to the lab instructor or TAs about the issues with the teammate.
 
 
-For the third step, include enough information to explain what happened. Reports will be handled discreetly, and information will be shared only with people who need it to address the concern. Retaliation against someone who reports a concern in good faith is looked down apon and unacceptable.
+For the third step, include enough information to explain what happened. Reports will be handled discreetly, and information will be shared only with people who need it to address the concern. Retaliation against someone who reports a concern in good faith is looked down upon and unacceptable.
 
 ## Responding to concerns
 
@@ -49,7 +49,7 @@ Anyone involved in a complaint will not be responsible for deciding how that com
 
 ## Acknowledgments
 
-This code of conduct to inspiration from the
+This code of conduct took inspiration from the
 [Python Community Code of Conduct](https://www.python.org/psf/conduct/)
 and the
 [Tidyverse Code of Conduct](https://github.com/tidyverse/tidyverse.org/blob/master/CODE_OF_CONDUCT.md).
