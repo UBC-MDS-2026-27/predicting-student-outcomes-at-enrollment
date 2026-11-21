@@ -39,9 +39,14 @@ The original data contain 4,424 student records across 17 undergraduate programs
 
 ## AI use
 
-We used OpenAI Codex to help prepare the enrollment predictors, draft and revise the report and README, and check reported scores against the model output. GitHub Copilot provided feedback on the preprocessing pull request. Teammates reviewed the changes before merging them.
+We used AI tools for different tasks during Milestone 1. For example, we used OpenAI Codex to discuss which predictors would be available at enrollment, troubleshoot a Matplotlib warning, and explore ways to present the figures in a way that effectively communicate the findings without overwhelming the audience. Codex also suggested plotting code and wording for parts of the report and README, and checked reported scores against the model output.
 
-One question we asked was “Why exclude semester performance when predicting at enrollment?” A sample prompt based on our exploratory analysis is “What do the boxplots tell us about how admission grades overlap for students who dropped out, stayed enrolled, or graduated?” Our [AI instructions](AGENT.md) and [contributor policy](CONTRIBUTING.md#ai-use-policy) describe how we use these tools.
+Our team decided which predictors to include, how to interpret the results, and which suggested changes to keep. Team members opened the issues and pull requests, reviewed one another’s changes, and made the merge decisions. Our [AI instructions](AGENT.md) describe the tutoring approach we adopted, and our [contributor policy](CONTRIBUTING.md#ai-use-policy) explains how contributors disclose and verify AI-assisted work.
+
+Examples of questions we discussed with AI included:
+
+- Why should we exclude semester performance when predicting outcomes at enrollment?
+- What is causing the Matplotlib deprecation warning in the age and admission-grade boxplots?
 
 ## Licenses
 
