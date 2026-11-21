@@ -37,7 +37,14 @@ Failure to follow the code of conduct will result in a three-step warning system
 3. Reaching out to the lab instructor or TAs about the issues with the teammate.
 
 
-For the third step, include enough information to explain what happened. Reports will be handled discreetly, and information will be shared only with people who need it to address the concern. Retaliation against someone who reports a concern in good faith is looked down upon and unacceptable.
+To report a concern privately, email Sky Kehan Sheng (Instructor)
+at [skysheng@cs.ubc.ca](mailto:skysheng@cs.ubc.ca), or send a direct
+message to `@Sky` in the course Slack workspace.
+
+Alternatively, contact either teaching assistant privately on Slack:
+
+- Agam Sanghera: `@Agam`
+- Cynthia Limantono: `@Cynthia (TA)`
 
 ## Responding to concerns
 
