@@ -13,8 +13,8 @@ To read the report without running the analysis, open the HTML file on GitHub, c
 1. Install [Git](https://git-scm.com/downloads), [uv](https://docs.astral.sh/uv/getting-started/installation/) and the [Quarto CLI](https://quarto.org/docs/get-started/). Open a terminal and clone the repository.
 
    ```sh
-   git clone https://github.com/UBC-MDS-2026-27/DSCI-522-Group-5.git
-   cd DSCI-522-Group-5
+   git clone https://github.com/UBC-MDS-2026-27/predicting-student-outcomes-at-enrollment.git
+   cd predicting-student-outcomes-at-enrollment
    ```
 
 2. Set up the Python 3.12 environment. The project dependencies are listed in [pyproject.toml](pyproject.toml), and [uv.lock](uv.lock) records the exact versions.
