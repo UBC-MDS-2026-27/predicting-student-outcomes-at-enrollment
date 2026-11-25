@@ -12,46 +12,27 @@ For a **suggested change**, identify the affected part of the project and explai
 
 ## Setting up the project
 
-1. Install [Git](https://git-scm.com/downloads) and [Docker Desktop](https://www.docker.com/products/docker-desktop/). Start Docker Desktop before continuing. On Windows, make sure Docker Desktop uses Linux containers. Python, uv, Quarto, and the project dependencies run inside the container, so you do not need to install them separately on your computer.
+1. Follow [Reproduce the analysis](README.md#reproduce-the-analysis) to install Docker, create an SSH key and download the image, then return to these steps.
 
-2. On Windows, open Git Bash. On macOS, open Terminal. Clone the repository and enter its directory:
+2. Before your first connection, install Positron and download the image
+   
+   a. Install [Positron](https://positron.posit.co/download.html) and follow the set up steps. The **Remote SSH** allows you to connect to the container and is built in to the download.
 
-``` sh
-git clone https://github.com/UBC-MDS-2026-27/predicting-student-outcomes-at-enrollment.git
-cd predicting-student-outcomes-at-enrollment
-```
+   b. Check that Git knows who you are. Run the following command:
+   ```sh
+   git config --global user.email
+   ```
 
-3. The container setup requires an SSH public key on your computer. Check whether the default Ed25519 public key exists:
+   Your GitHub account email should be printed by the above. If it prints nothing, set it with the following commands. Otherwise, continue to 2c.
+   ```sh
+   git config --global user.name "Your Name" &&
+   git config --global user.email "you@example.com"
+   ```
 
-``` sh
-ls ~/.ssh/id_ed25519.pub
-```
-
-3b. If the command reports “No such file or directory,” create a key, otherwise continue to step 4:
-
-``` sh
-ssh-keygen -t ed25519
-```
-
-3c.Accept the default file location and follow the prompts. Do not overwrite an existing key. Confirm that the public key exists before continuing:
-
-``` sh
-ls ~/.ssh/id_ed25519.pub
-```
-
-4. From the repository’s root directory, download the Docker image pinned in docker-compose.yml:
-
-``` sh
-docker compose pull
-```
-
-5. Render the analysis inside the container:
-
-``` sh
-docker compose run --rm analysis-env uv run quarto render
-```
-
-Rendering requires internet access to download the dataset from UCI. The `--rm` option automatically removes the container after the command finishes. Generated files remain in your local repository because the project directory is mounted into the container.
+   c. Download the image by navigating to the project folder from step 1 and run:
+   ```sh
+   docker compose pull
+   ```
 
 ## Pull request process
 
