@@ -12,23 +12,46 @@ For a **suggested change**, identify the affected part of the project and explai
 
 ## Setting up the project
 
-Install [Git](https://git-scm.com/downloads), [uv](https://docs.astral.sh/uv/getting-started/installation/), and the [Quarto CLI](https://quarto.org/docs/get-started/). Team members can then clone the repository and create the project environment by running the following commands in a terminal.
+1. Install [Git](https://git-scm.com/downloads) and [Docker Desktop](https://www.docker.com/products/docker-desktop/). Start Docker Desktop before continuing. On Windows, make sure Docker Desktop uses Linux containers. Python, uv, Quarto, and the project dependencies run inside the container, so you do not need to install them separately on your computer.
 
-```sh
+2. On Windows, open Git Bash. On macOS, open Terminal. Clone the repository and enter its directory:
+
+``` sh
 git clone https://github.com/UBC-MDS-2026-27/predicting-student-outcomes-at-enrollment.git
 cd predicting-student-outcomes-at-enrollment
-uv sync --locked
 ```
 
-Run the following command from the repository root to execute the analysis and render the report. Internet access is required because the analysis downloads the original dataset from the UCI Machine Learning Repository.
+3. The container setup requires an SSH public key on your computer. Check whether the default Ed25519 public key exists:
 
-```sh
-uv run quarto render
+``` sh
+ls ~/.ssh/id_ed25519.pub
 ```
 
-Open `reports/student-academic-outcomes.html` in your browser to inspect the result. The analysis source is `reports/student-academic-outcomes.qmd`. Make report edits in that source file and render it again to update the HTML.
+3b. If the command reports “No such file or directory,” create a key, otherwise continue to step 4:
 
-If your change introduces a Python dependency, run `uv add <package>`, replacing `<package>` with its name. This project is configured to pin direct dependencies to exact versions in `pyproject.toml`. Commit the updated `pyproject.toml` and `uv.lock` together so others can reproduce your environment.
+``` sh
+ssh-keygen -t ed25519
+```
+
+3c.Accept the default file location and follow the prompts. Do not overwrite an existing key. Confirm that the public key exists before continuing:
+
+``` sh
+ls ~/.ssh/id_ed25519.pub
+```
+
+4. From the repository’s root directory, download the Docker image pinned in docker-compose.yml:
+
+``` sh
+docker compose pull
+```
+
+5. Render the analysis inside the container:
+
+``` sh
+docker compose run --rm analysis-env uv run quarto render
+```
+
+Rendering requires internet access to download the dataset from UCI. The `--rm` option automatically removes the container after the command finishes. Generated files remain in your local repository because the project directory is mounted into the container.
 
 ## Pull request process
 
