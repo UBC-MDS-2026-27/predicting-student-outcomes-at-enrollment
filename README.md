@@ -12,26 +12,50 @@ Read the report online without installing anything:
 
 ## Reproduce the analysis
 
-1. Install [Git](https://git-scm.com/downloads), [uv](https://docs.astral.sh/uv/getting-started/installation/) and the [Quarto CLI](https://quarto.org/docs/get-started/). Open a terminal and clone the repository.
+Install [Git](https://git-scm.com/downloads) and [Docker Desktop](https://www.docker.com/products/docker-desktop/). Start Docker Desktop before continuing. On Windows, make sure Docker Desktop uses Linux containers. Python, uv, Quarto, and the project dependencies run inside the container, so you do not need to install them separately on your computer.
 
-   ```sh
-   git clone https://github.com/UBC-MDS-2026-27/predicting-student-outcomes-at-enrollment.git
-   cd predicting-student-outcomes-at-enrollment
-   ```
+On Windows, open Git Bash. On macOS, open Terminal. Clone the repository and enter its directory:
 
-2. Set up the Python 3.12 environment. The project dependencies are listed in [pyproject.toml](pyproject.toml), and [uv.lock](uv.lock) records the exact versions.
+```sh
+git clone https://github.com/UBC-MDS-2026-27/predicting-student-outcomes-at-enrollment.git
+cd predicting-student-outcomes-at-enrollment
+```
 
-   ```sh
-   uv sync --locked
-   ```
+The container setup requires an SSH public key on your computer. Check whether the default Ed25519 public key exists:
 
-3. From the same directory, render the report. This step needs internet access to download the dataset from UCI.
+```sh
+ls ~/.ssh/id_ed25519.pub
+```
 
-   ```sh
-   uv run quarto render
-   ```
+If the command reports “No such file or directory,” create a key:
 
-4. Open `reports/student-academic-outcomes.html` in your browser. The render also writes the original CSV to `data/raw/data.csv` and the training and test files to `data/processed/`.
+```sh
+ssh-keygen -t ed25519
+```
+
+Accept the default file location and follow the prompts. Do not overwrite an existing key. Confirm that the public key exists before continuing:
+
+```sh
+ls ~/.ssh/id_ed25519.pub
+```
+
+From the repository’s root directory, download the Docker image pinned in docker-compose.yml:
+
+```sh
+docker compose pull
+```
+
+Render the analysis inside the container:
+
+```sh
+docker compose run --rm analysis-env uv run quarto render
+```
+
+Rendering requires internet access to download the dataset from UCI. The `--rm` option automatically removes the container after the command finishes. Generated files remain in your local repository because the project directory is mounted into the container.
+
+Open `reports/student-academic-outcomes.html` in your browser to read the report. Rendering also writes the original CSV to `data/raw/data.csv` and the training and test files to `data/processed/`.
+
+For instructions on developing inside the container or changing project dependencies, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Dataset
 
