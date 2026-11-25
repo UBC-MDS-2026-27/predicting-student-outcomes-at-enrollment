@@ -8,7 +8,7 @@ How well can information available at enrollment predict whether a student will 
 
 Read the report online without installing anything:
 
-[Read the published report](https://ubc-mds-2026-27.github.io/predicting-student-outcomes-at-enrollment/reports/student-academic-outcomes.html) · [Quarto source](reports/student-academic-outcomes.qmd) · [Report HTML](reports/student-academic-outcomes.html)
+[Read the published report](https://ubc-mds-2026-27.github.io/predicting-student-outcomes-at-enrollment/) · [Quarto source](reports/student-academic-outcomes.qmd) · [Report HTML](reports/student-academic-outcomes.html)
 
 ## Reproduce the analysis
 
