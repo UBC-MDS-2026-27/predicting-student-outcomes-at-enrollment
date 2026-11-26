@@ -15,7 +15,7 @@ For a **suggested change**, identify the affected part of the project and explai
 
 1. Follow [Reproduce the analysis](README.md#reproduce-the-analysis) to install Docker, create an SSH key and download the image, then return to these steps.
 
-2. Before your first connection, install Positron and download the image
+2. Before your first connection, install Positron and check your Git settings:
    
    a. Install [Positron](https://positron.posit.co/download.html) and follow the set up steps. The **Remote SSH** allows you to connect to the container and is built in to the download.
 
@@ -24,22 +24,17 @@ For a **suggested change**, identify the affected part of the project and explai
    git config --global user.email
    ```
 
-   Your GitHub account email should be printed by the above. If it prints nothing, set it with the following commands. Otherwise, continue to 2c.
+   Your GitHub account email should be printed by the above. If it prints nothing, set it with the following commands. Otherwise, continue to the next section.
    ```sh
    git config --global user.name "Your Name" &&
    git config --global user.email "you@example.com"
-   ```
-
-   c. Download the image by navigating to the project folder from step 1 and run:
-   ```sh
-   docker compose pull
    ```
 
 The project is now set up. Continue to the next section for steps that must be completed each time you work on the project.
 
 ## Each time you work on the project
 
-To connect and work within the countainer, follow these steps:
+To connect and work within the container, follow these steps:
 
 **1.** Start the container in the background:
 ```sh
@@ -54,13 +49,13 @@ docker compose ps
 
 **3.** Type and run **Remote SSH: Show Remote Menu**, then pick **Connect to Host.**
 
-**4.** Type `root@localhost:2222` and press Enter. A new Positron window will open. Choose from the following options:
+**4.** Type `root@localhost:2222` and press Enter. A new Positron window will open. You may see these prompts:
 
    - If it asks for the platform of the remote host, pick *Linux*.
    - If it asks whether you trust the host (a “fingerprint”), click *Continue*.
    - The first time, Positron installs its server inside the container. This takes a few minutes. Be patient.
 
-**5.** Check that the bottom left corner shows SSH: localhost:2222, this means you are connected. Explorer should show **No folder opened** and a terminal should shart in `/root`. Proceed with the following steps:
+**5.** Check that the bottom left corner shows `SSH: localhost:2222`, this means you are connected. Explorer should show **No folder opened** and a terminal should start in `/root`. Proceed with the following steps:
 
    **a.** Click **Open Folder** in the Explorer. A path box appears at the top of the window.
 
@@ -68,15 +63,13 @@ docker compose ps
 
    **c.** The window reloads. The Explorer now shows WORKSPACE [SSH: LOCALHOST:2222] with your project files. A file you change here changes on your computer too.
 
-**6.** Pick the interpreter by clicking the interpreter button at the **top right** of the window (it will show a Python or R version). Click **New Console Session**, then:
+**6.** Pick the interpreter by clicking the interpreter button at the **top right** of the window (it will show a Python version). Click **New Console Session**, then:
 
-   **a.** *Python*: pick the one named **Python 3.x (uv: your-project-name)** with the path `/opt/venv/bin/python`, the environment built from your `uv.lock`. The top right button then shows that name. If it isn’t in the list, open the Command Palette (see step 2 for shortcut), run **Python: Select Interpreter**, choose **Enter interpreter path…** and type `/opt/venv/bin/python`. Don’t pick `/workspace/.venv`: that is the environment from your own computer, and it doesn’t run in the container.
+   **a.** *Python*: pick the **Python 3.12** interpreter with the path `/opt/venv/bin/python`, which is the environment built from the project's `uv.lock`. The top right button then shows that name. If it isn’t in the list, open the Command Palette (see step 2 for shortcut), run **Python: Select Interpreter**, choose **Enter interpreter path…** and type `/opt/venv/bin/python`. Don’t pick `/workspace/.venv`: that is the environment from your own computer, and it doesn’t run in the container.
 
-   **b.** *R*: pick the R version in the list. It already uses the packages from your renv.lock.
+   **b.** To check, run `import sys; print(sys.executable)` in the Console. It should print `/opt/venv/bin/python`.
 
-   **c.** To check, run import sys; print(sys.executable) in the Console. It should print /opt/venv/bin/python.
-
-**7.** Complete work as usual. The Terminal, Console and Render button all run **inside* the container.
+**7.** Complete work as usual. The Terminal, Console and Render button all run **inside** the container.
 
 **8.** When you are finished working, close the Positron window, then stop the container in a terminal on your computer:
 
@@ -103,7 +96,7 @@ If your work required a new or updated package, use the following steps to updat
 ```sh
 git switch main
 git pull
-git switch <branch-name>
+git switch -c <branch-name>
 ```
 
 ```sh
@@ -114,7 +107,7 @@ uv add <package>
 ```sh
 git add pyproject.toml uv.lock
 git commit -m "Add <package> for <reason>"
-git push origin <branch-name>
+git push -u origin <branch-name>
 ```
 
 3. Wait for the [Publish image to Docker Hub](https://github.com/UBC-MDS-2026-27/predicting-student-outcomes-at-enrollment/actions/workflows/publish-dockerhub.yml) workflow to finish on your branch. When it completes, you will see a green checkmark.
@@ -145,7 +138,7 @@ The published report on [GitHub Pages](https://ubc-mds-2026-27.github.io/predict
 uv run quarto render
 ```
 
-Alternatively, from a terminal on your computer run:
+Alternatively, from a terminal in the project folder on your computer run:
 ```sh
 docker compose run --rm analysis-env uv run quarto render
 ```
@@ -157,10 +150,10 @@ docker compose run --rm analysis-env uv run quarto render
 cp reports/student-academic-outcomes.html docs/index.html
 ```
 
-4. Commit the report source .qmd, the rendered report html and the published copy, then push your branch:
+4. Commit the report source `.qmd`, the rendered report `.html` and the published copy, then push your branch:
 ```sh
 git add reports/student-academic-outcomes.qmd reports/student-academic-outcomes.html docs/index.html
-git commit -m "Update <section/part of report> and republished report>"
+git commit -m "Update <section/part of report> and republished report"
 git push origin <branch-name>
 ```
 
@@ -180,7 +173,7 @@ git push origin <branch-name>
 
    Team members should work on branches in this repository. External contributors can follow the same process in their own fork.
 
-2. **Make and check your changes.** Follow [PEP 8](https://peps.python.org/pep-0008/) for Python code. If you change the analysis or report, run `uv run quarto render` and open the resulting HTML. Check that the affected figures, tables, and cross-references display correctly and that the written interpretation agrees with the output. Include both the updated `.qmd` and rendered `.html` in your commit. For a Markdown-only change, preview the file and check its links.
+2. **Make and check your changes.** Follow [PEP 8](https://peps.python.org/pep-0008/) for Python code. If you change the analysis or report, render it and republish it by following [Publishing the report](#publishing-the-report). Before committing, check that the affected figures, tables and cross-references display correctly and that the written interpretation still agrees with the output. For a Markdown-only change, preview the file and check its links.
 
 3. **Review and commit your work.** Use `git status` and `git diff` to check which files and lines changed. Stage the files relevant to the issue and write a commit message that describes the change. Push your branch to GitHub. For the example branch above, use `git push -u origin add-eda-figure`.
 
@@ -198,4 +191,4 @@ Contributors must personally open GitHub issues and pull requests. Human teammat
 
 ## Acknowledgments
 
-The setup and pull request guidance was adapted for this project from the [UBC DSCI 522 Breast Cancer Predictor project template](https://github.com/UBC-MDS/DSCI_522_project-template-breast-cancer-predictor/tree/0.0.1).
+The setup and pull request guidance was adapted for this project from the [UBC DSCI 522 Breast Cancer Predictor project template](https://github.com/UBC-MDS/DSCI_522_project-template-breast-cancer-predictor/tree/1.0.0).
