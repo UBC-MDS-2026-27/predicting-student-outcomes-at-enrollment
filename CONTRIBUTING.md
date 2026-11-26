@@ -11,6 +11,7 @@ For a **bug report**, explain what you expected to happen, what actually happene
 For a **suggested change**, identify the affected part of the project and explain why the change would help. For example, if a figure is difficult to interpret, give its number or section heading and describe the comparison you want readers to be able to make.
 
 ## Setting up the project
+*Instructions adapted from [Milestone 2, step 6](https://ubc-mds.github.io/DSCI_522_dsci-workflows_students/assignments/milestone2.html#positron-ssh)*
 
 1. Follow [Reproduce the analysis](README.md#reproduce-the-analysis) to install Docker, create an SSH key and download the image, then return to these steps.
 
@@ -33,6 +34,139 @@ For a **suggested change**, identify the affected part of the project and explai
    ```sh
    docker compose pull
    ```
+
+The project is now set up. Continue to the next section for steps that must be completed each time you work on the project.
+
+## Each time you work on the project
+
+To connect and work within the countainer, follow these steps:
+
+**1.** Start the container in the background:
+```sh
+docker compose up -d
+```
+*(Optional)* To verify the container started successfully, running the following should list analysis-env as running.
+```sh
+docker compose ps
+```
+
+**2.** Open Positron, then open the Command Palette (`Cmd+Shift+P` on Mac, `Ctrl+Shift+P` on Windows). It will appear at the top of the IDE.
+
+**3.** Type and run **Remote SSH: Show Remote Menu**, then pick **Connect to Host.**
+
+**4.** Type `root@localhost:2222` and press Enter. A new Positron window will open. Choose from the following options:
+
+   - If it asks for the platform of the remote host, pick *Linux*.
+   - If it asks whether you trust the host (a “fingerprint”), click *Continue*.
+   - The first time, Positron installs its server inside the container. This takes a few minutes. Be patient.
+
+**5.** Check that the bottom left corner shows SSH: localhost:2222, this means you are connected. Explorer should show **No folder opened** and a terminal should shart in `/root`. Proceed with the following steps:
+
+   **a.** Click **Open Folder** in the Explorer. A path box appears at the top of the window.
+
+   **b.** Delete what is in it, type `/workspace`, and press Enter (or click OK, you may need to click “ok” a few times before this works).
+
+   **c.** The window reloads. The Explorer now shows WORKSPACE [SSH: LOCALHOST:2222] with your project files. A file you change here changes on your computer too.
+
+**6.** Pick the interpreter by clicking the interpreter button at the **top right** of the window (it will show a Python or R version). Click **New Console Session**, then:
+
+   **a.** *Python*: pick the one named **Python 3.x (uv: your-project-name)** with the path `/opt/venv/bin/python`, the environment built from your `uv.lock`. The top right button then shows that name. If it isn’t in the list, open the Command Palette (see step 2 for shortcut), run **Python: Select Interpreter**, choose **Enter interpreter path…** and type `/opt/venv/bin/python`. Don’t pick `/workspace/.venv`: that is the environment from your own computer, and it doesn’t run in the container.
+
+   **b.** *R*: pick the R version in the list. It already uses the packages from your renv.lock.
+
+   **c.** To check, run import sys; print(sys.executable) in the Console. It should print /opt/venv/bin/python.
+
+**7.** Complete work as usual. The Terminal, Console and Render button all run **inside* the container.
+
+**8.** When you are finished working, close the Positron window, then stop the container in a terminal on your computer:
+
+```sh
+docker compose down
+```
+
+## Troubleshooting set up
+*Troubleshooting adapted from [Milestone 2, step 6](https://ubc-mds.github.io/DSCI_522_dsci-workflows_students/assignments/milestone2.html#positron-ssh)*
+
+- **`~/.ssh/id_ed25519.pub` is a folder.** Docker created it because the key didn't exist when the container started. Run `docker compose down`, delete that folder, create the key by following the [README](README.md#reproduce-the-analysis), and start again.
+- **`~/.gitconfig` is a folder, or Git in the container doesn't know your name.** The same thing happened with your Git settings. Run `docker compose down`, delete that folder, set your Git name and email as described above, and start again.
+- **GitHub asks you to sign in when you push from the container.** Sign in once in the browser window that Positron opens. Positron remembers it after that.
+- **It asks for a password.** The container can't see your SSH key. Check that your public key is named `id_ed25519.pub`, or change the key path in `docker-compose.yml`.
+- **"Remote host identification has changed."** You're using a new image, for example after pulling an updated tag. Run `ssh-keygen -R "[localhost]:2222"`, then connect again.
+- **Linux laptops: SSH refuses the key.** The mounted key file belongs to you, not `root`. Remove the `#` from the `StrictModes no` line in the `Dockerfile` and push, so the workflow publishes a fixed image.
+- **Port 2222 is already in use.** Change the first `2222` in `docker-compose.yml` to another number, such as `2223`, and connect to `root@localhost:2223` instead. Don't commit this change, since it only applies to your computer.
+
+## Adding or updating a package
+
+If your work required a new or updated package, use the following steps to update `pyproject.toml` and `uv.lock`:
+
+1. Create a new branch from an up-to-date `main` and add the package from the Positron terminal (inside the container)
+```sh
+git switch main
+git pull
+git switch <branch-name>
+```
+
+```sh
+uv add <package>
+```
+
+2. Commit the changes, then push to GitHub
+```sh
+git add pyproject.toml uv.lock
+git commit -m "Add <package> for <reason>"
+git push origin <branch-name>
+```
+
+3. Wait for the [Publish image to Docker Hub](https://github.com/UBC-MDS-2026-27/predicting-student-outcomes-at-enrollment/actions/workflows/publish-dockerhub.yml) workflow to finish on your branch. When it completes, you will see a green checkmark.
+
+4. Close Positron, then from a terminal on your computer, from the project folder, download the updated `docker-compose.yml` and the new image. Then, restart the container so it uses the new image:
+```sh
+git pull
+docker compose pull
+docker compose down
+docker compose up -d
+```
+
+5. Reconnect with Positron as in [Each time you work on the project](#each-time-you-work-on-the-project).
+
+6. Open a pull request. After it is merged, everyone updates their local copy and image:
+```sh
+git switch main
+git pull
+docker compose pull
+```
+
+## Publishing the report
+
+The published report on [GitHub Pages](https://ubc-mds-2026-27.github.io/predicting-student-outcomes-at-enrollment/) is a copy of the rendered report stored at `docs/index.html`. Each time you change the analysis or report, update that copy so the published version matches.
+
+1. Render the report inside of the container. Open the Positron terminal and run:
+```sh
+uv run quarto render
+```
+
+Alternatively, from a terminal on your computer run:
+```sh
+docker compose run --rm analysis-env uv run quarto render
+```
+
+2. Open `reports/student-academic-outcomes.html` and check that the figures, tables and text display correctly.
+
+3. Copy the rendered report over to `docs/index.html`:
+```sh
+cp reports/student-academic-outcomes.html docs/index.html
+```
+
+4. Commit the report source .qmd, the rendered report html and the published copy, then push your branch:
+```sh
+git add reports/student-academic-outcomes.qmd reports/student-academic-outcomes.html docs/index.html
+git commit -m "Update <section/part of report> and republished report>"
+git push origin <branch-name>
+```
+
+5. Open a pull request on GitHub. The report will publish from main so you must merge before changes become live.
+
+6. A few minutes after the merge, open the [published report](https://ubc-mds-2026-27.github.io/predicting-student-outcomes-at-enrollment/) and check that it shows your changes, including the figures.
 
 ## Pull request process
 
