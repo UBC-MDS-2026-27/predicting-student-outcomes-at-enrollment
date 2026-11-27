@@ -16,7 +16,11 @@ To keep the analysis reproducible, we use a Docker container with the same softw
 
 ## Reproduce the analysis
 
+### 1. Install prerequisites
+
 Install [Git](https://git-scm.com/downloads) and [Docker Desktop](https://www.docker.com/products/docker-desktop/). Start Docker Desktop before continuing. On Windows, make sure Docker Desktop uses Linux containers. Python, uv, Quarto, and the project dependencies run inside the container, so you do not need to install them separately on your computer.
+
+### 2. Clone the repository
 
 On Windows, open Git Bash. On macOS, open Terminal. Clone the repository and enter its directory:
 
@@ -25,29 +29,47 @@ git clone https://github.com/UBC-MDS-2026-27/predicting-student-outcomes-at-enro
 cd predicting-student-outcomes-at-enrollment
 ```
 
+Run the remaining commands from this directory.
+
+### 3. Check your SSH key
+
 The container setup requires an SSH public key on your computer. Check whether the default Ed25519 public key exists:
 
 ```sh
 ls ~/.ssh/id_ed25519.pub
 ```
 
-If the command reports “No such file or directory,” create a key:
+If the command prints the file path, your public key already exists. Skip Step 3.1 and continue to **Step 4: Pull the Docker image**.
+
+If the command reports “No such file or directory,” complete Step 3.1 before continuing.
+
+#### 3.1. Create a key if needed
+
+Create an SSH key:
 
 ```sh
 ssh-keygen -t ed25519
 ```
 
-Accept the default file location and follow the prompts. Do not overwrite an existing key. Confirm that the public key exists before continuing:
+Accept the default file location and follow the prompts. Do not overwrite an existing key. Confirm that the public key now exists:
 
 ```sh
 ls ~/.ssh/id_ed25519.pub
 ```
 
-From the repository’s root directory, download the Docker image pinned in docker-compose.yml:
+Once the command prints the file path, continue to **Step 4: Pull the Docker image**.
+
+### 4. Pull the Docker image
+
+From the repository’s root directory, download the Docker image pinned in `docker-compose.yml`:
 
 ```sh
 docker compose pull
 ```
+
+Wait for the download to finish successfully before continuing to Step 5.
+
+### 5. Render the analysis
 
 Render the analysis inside the container:
 
@@ -56,6 +78,10 @@ docker compose run --rm analysis-env uv run quarto render
 ```
 
 Rendering requires internet access to download the dataset from UCI. The `--rm` option automatically removes the container after the command finishes. Generated files remain in your local repository because the project directory is mounted into the container.
+
+After rendering finishes successfully, continue to Step 6.
+
+### 6. Open the report
 
 Open `reports/student-academic-outcomes.html` in your browser to read the report. Rendering also writes the original CSV to `data/raw/data.csv` and the training and test files to `data/processed/`.
 
