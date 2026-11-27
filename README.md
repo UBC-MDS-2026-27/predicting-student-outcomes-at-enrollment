@@ -10,6 +10,10 @@ Read the report online without installing anything:
 
 [Read the published report](https://ubc-mds-2026-27.github.io/predicting-student-outcomes-at-enrollment/) · [Quarto source](reports/student-academic-outcomes.qmd) · [Report HTML](reports/student-academic-outcomes.html)
 
+## Usage
+
+To keep the analysis reproducible, we use a Docker container with the same software and package versions for everyone. You can find the image on Docker Hub at [rjcrystal786/predicting-student-outcomes-at-enrollment](https://hub.docker.com/r/rjcrystal786/predicting-student-outcomes-at-enrollment)
+
 ## Reproduce the analysis
 
 Install [Git](https://git-scm.com/downloads) and [Docker Desktop](https://www.docker.com/products/docker-desktop/). Start Docker Desktop before continuing. On Windows, make sure Docker Desktop uses Linux containers. Python, uv, Quarto, and the project dependencies run inside the container, so you do not need to install them separately on your computer.
@@ -56,6 +60,12 @@ Rendering requires internet access to download the dataset from UCI. The `--rm` 
 Open `reports/student-academic-outcomes.html` in your browser to read the report. Rendering also writes the original CSV to `data/raw/data.csv` and the training and test files to `data/processed/`.
 
 For instructions on developing inside the container or changing project dependencies, see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Dependencies
+
+Install [Docker](https://www.docker.com/) to run the analysis in a container.
+
+The repository’s [Dockerfile](Dockerfile) builds the image with Quarto, uv, Python, and the Python packages listed in [pyproject.toml](pyproject.toml). The [uv.lock](uv.lock) file records the exact package versions.
 
 ## Dataset
 
